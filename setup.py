@@ -10,7 +10,7 @@ setup(
     license='BSD 2-clause',
     packages=['ghost_cli'],
     install_requires=[
-        'pyjwt>=2.6.0',
+        'pyjwt>=2.4.0',
         'requests>=2.28.1',
         'python-slugify>=7.0.0'                     
     ],
