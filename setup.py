@@ -11,8 +11,8 @@ setup(
     packages=['ghost_cli'],
     install_requires=[
         'pyjwt>=2.4.0',
-        'requests>=2.28.1',
-        'python-slugify>=7.0.0'                     
+        'requests>=2.22.0',
+        'python-slugify>=6.0.0'                     
     ],
     classifiers=[
         'Intended Audience :: Science/Research',
