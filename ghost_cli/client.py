@@ -1,5 +1,5 @@
 from slugify import slugify
-from typing import Union, Any, Tuple
+from typing import Union, Any, Tuple, List
 from requests import Response
 from .models import Post, Tag
 import datetime
@@ -85,7 +85,7 @@ class GhostCli(HttpCli):
         data = res.json()['posts']
         return Post(**data[0]) if len(data) > 0 else None
 
-    def get_posts(self, attr: str, value: Any, page: int=1, limit: int=15) -> Union[list[Post], None]:
+    def get_posts(self, attr: str, value: Any, page: int=1, limit: int=15) -> Union[List[Post], None]:
         logger.debug(f"{attr}: {value}")
         my_filter = f"?filter={attr}:{value}&page={page}&limit={limit}"
         res = self.get('posts', my_filter)
