@@ -8,7 +8,7 @@ setup(
     author='Milnomada.org',
     author_email='info@milnomada.io',
     license='BSD 2-clause',
-    packages=['ghost-cli'],
+    packages=['ghost_cli'],
     install_requires=[
         'pyjwt>=2.6.0',
         'requests>=2.28.1',
