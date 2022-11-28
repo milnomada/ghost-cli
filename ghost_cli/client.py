@@ -118,6 +118,18 @@ class GhostCli(HttpCli):
         data = res.json()['tags']
         return Tag(**data[0]) if len(data) > 0 else None
 
+    def get_tags(self, page: int=1, limit: int=15) -> Union[List[Tag], None]:
+        q = {
+            'status': 'all',
+            'page': page,
+            'limit': limit
+        }
+        my_filter = urllib.parse.urlencode(q)
+        res = self.get('tags', my_filter)
+        data = res.json()['tags']
+        data = None if data is None else [Tag(**d) for d in data]
+        return data
+
     def create_post(self, **kwargs) -> bool:
         body = {'posts': [kwargs]}
         res = self.post('posts', body)
