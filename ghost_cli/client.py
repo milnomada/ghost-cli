@@ -5,6 +5,7 @@ from .models import Post, Tag
 import datetime
 import logging
 import requests
+import urllib
 
 
 logger = logging.getLogger(__file__)
@@ -16,7 +17,7 @@ class HttpCli(object):
         self.headers = headers
 
     def get(self, path: str, filter: str) -> Union[Response, None]:
-        url = f"{self.url}/{path}{filter}"
+        url = f"{self.url}/{path}?{filter}"
         logger.debug(f"{url}")
         try:
             r = requests.get(url, headers=self.headers)
@@ -71,40 +72,48 @@ class GhostCli(HttpCli):
         logger.info(f"GhostCli started at {url}")
 
     def get_post_by_title(self, title: str) -> Union[Post, None]:
-        slug = slugify(title)
-        logger.debug(f"slug: {slug}")
-        my_filter = f"?filter=title:'{title}'&limit=1"
+        quoted = urllib.parse.quote(title)
+        logger.debug(f"{title} -> {quoted}")
+        my_filter = f"filter=title:'{quoted}'&limit=1"
         res = self.get('posts', my_filter)
         data = res.json()['posts']
         return Post(**data[0]) if len(data) > 0 else None
 
     def get_post(self, attr: str, value: Any) -> Union[Post, None]:
         logger.debug(f"{attr}: {value}")
-        my_filter = f"?filter={attr}:{value}&limit=1"
+        my_filter = f"filter={attr}:{value}&limit=1"
         res = self.get('posts', my_filter)
         data = res.json()['posts']
         return Post(**data[0]) if len(data) > 0 else None
 
-    def get_posts(self, attr: str, value: Any, page: int=1, limit: int=15) -> Union[List[Post], None]:
-        logger.debug(f"{attr}: {value}")
-        q_filter = "?" if attr is None or value is None else f"?filter={attr}:{value}&"
-        my_filter = f"{q_filter}page={page}&limit={limit}"
+    def get_posts(
+        self, page: int=1, limit: int=15, formats: str="html,mobiledoc", order: str="publisihed_at desc"
+    ) -> Union[List[Post], None]:
+        q = {
+            'include': 'tags',
+            'status': 'all',
+            'formats': formats,
+            'page': page,
+            'limit': limit,
+            'order': order
+        }
+        my_filter = urllib.parse.urlencode(q)
         res = self.get('posts', my_filter)
         data = res.json()['posts']
         data = None if data is None else [Post(**d) for d in data]
         return data
 
     def get_tag_by_name(self, name: str) -> Union[Tag, None]:
-        slug = slugify(name)
-        logger.debug(f"slug: {slug}")
-        my_filter = f"?filter=name:'{name}'&limit=1"
+        quoted = urllib.parse.quote(name)
+        logger.debug(f"{name} -> {quoted}")
+        my_filter = f"filter=name:'{quoted}'&limit=1"
         res = self.get('tags', my_filter)
         data = res.json()
         return Tag(**data[0]) if len(data) > 0 else None
 
     def get_tag(self, attr: str, value: Any) -> Union[Tag, None]:
         logger.debug(f"{attr}: {value}")
-        my_filter = f"?filter={attr}:{value}&limit=1"
+        my_filter = f"filter={attr}:{value}&limit=1"
         res = self.get('tags', my_filter)
         data = res.json()['tags']
         return Tag(**data[0]) if len(data) > 0 else None
