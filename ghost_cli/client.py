@@ -113,6 +113,7 @@ class GhostCli(HttpCli):
 
     def get_tag(self, attr: str, value: Any) -> Union[Tag, None]:
         logger.debug(f"{attr}: {value}")
+        value = value if attr != "name" else f"'{value}'" 
         my_filter = f"filter={attr}:{value}&limit=1"
         res = self.get('tags', my_filter)
         data = res.json()['tags']
