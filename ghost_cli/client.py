@@ -146,8 +146,8 @@ class GhostCli(HttpCli):
         logger.debug(res.__dict__)
         return res.status_code == 204 if res is not None else False
 
-    def create_tag(self, tag: Tag) -> bool:
-        body = {'tags': [tag.__dict__]}
+    def create_tag(self, **kwargs) -> bool:
+        body = {'tags': [kwargs]}
         res = self.post('tags', body)
         logger.debug(res.__dict__)
         return res.status_code == 201 if res is not None else False
