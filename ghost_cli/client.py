@@ -21,7 +21,6 @@ class HttpCli(object):
         logger.debug(f"{url}")
         try:
             r = requests.get(url, headers=self.headers)
-            logger.debug(r.json())
             return r
         except Exception as e:
             logger.error(f"Exception: {e}")
@@ -76,14 +75,22 @@ class GhostCli(HttpCli):
         logger.debug(f"{title} -> {quoted}")
         my_filter = f"filter=title:'{quoted}'&limit=1"
         res = self.get('posts', my_filter)
-        data = res.json()['posts']
+        payload = res.json()
+        if 'errors' in payload:
+            logger.error(payload['errors'])
+            return None
+        data = payload['posts']
         return Post(**data[0]) if len(data) > 0 else None
 
     def get_post(self, attr: str, value: Any) -> Union[Post, None]:
         logger.debug(f"{attr}: {value}")
         my_filter = f"filter={attr}:{value}&limit=1"
         res = self.get('posts', my_filter)
-        data = res.json()['posts']
+        payload = res.json()
+        if 'errors' in payload:
+            logger.error(payload['errors'])
+            return None
+        data = payload['posts']
         return Post(**data[0]) if len(data) > 0 else None
 
     def get_posts(
@@ -99,7 +106,11 @@ class GhostCli(HttpCli):
         }
         my_filter = urllib.parse.urlencode(q)
         res = self.get('posts', my_filter)
-        data = res.json()['posts']
+        payload = res.json()
+        if 'errors' in payload:
+            logger.error(payload['errors'])
+            return None
+        data = payload['posts']
         data = None if data is None else [Post(**d) for d in data]
         return data
 
@@ -108,7 +119,11 @@ class GhostCli(HttpCli):
         logger.debug(f"{name} -> {quoted}")
         my_filter = f"filter=name:'{quoted}'&limit=1"
         res = self.get('tags', my_filter)
-        data = res.json()['tags']
+        payload = res.json()
+        if 'errors' in payload:
+            logger.error(payload['errors'])
+            return None
+        data = payload['tags']
         return Tag(**data[0]) if len(data) > 0 else None
 
     def get_tag(self, attr: str, value: Any) -> Union[Tag, None]:
@@ -116,7 +131,11 @@ class GhostCli(HttpCli):
         value = value if attr != "name" else f"'{value}'" 
         my_filter = f"filter={attr}:{value}&limit=1"
         res = self.get('tags', my_filter)
-        data = res.json()['tags']
+        payload = res.json()
+        if 'errors' in payload:
+            logger.error(payload['errors'])
+            return None
+        data = payload['tags']
         return Tag(**data[0]) if len(data) > 0 else None
 
     def get_tags(self, page: int=1, limit: int=15) -> Union[List[Tag], None]:
@@ -127,7 +146,11 @@ class GhostCli(HttpCli):
         }
         my_filter = urllib.parse.urlencode(q)
         res = self.get('tags', my_filter)
-        data = res.json()['tags']
+        payload = res.json()
+        if 'errors' in payload:
+            logger.error(payload['errors'])
+            return None
+        data = payload['tags']
         data = None if data is None else [Tag(**d) for d in data]
         return data
 
