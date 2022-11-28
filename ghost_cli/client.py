@@ -108,7 +108,7 @@ class GhostCli(HttpCli):
         logger.debug(f"{name} -> {quoted}")
         my_filter = f"filter=name:'{quoted}'&limit=1"
         res = self.get('tags', my_filter)
-        data = res.json()
+        data = res.json()['tags']
         return Tag(**data[0]) if len(data) > 0 else None
 
     def get_tag(self, attr: str, value: Any) -> Union[Tag, None]:
@@ -142,7 +142,7 @@ class GhostCli(HttpCli):
         logger.debug(res.__dict__)
         return res.status_code == 200 if res is not None else False
 
-    def delete_post(self, id: str):
+    def delete_post(self, id: str) -> bool:
         res = self.delete(f'posts/{id}')
         logger.debug(res.__dict__)
         return res.status_code == 204 if res is not None else False
@@ -153,7 +153,7 @@ class GhostCli(HttpCli):
         logger.debug(res.__dict__)
         return res.status_code == 201 if res is not None else False
 
-    def delete_tag(self, id: str):
+    def delete_tag(self, id: str) -> bool:
         res = self.delete(f'tags/{id}')
         logger.debug(res.__dict__)
         return res.status_code == 204 if res is not None else False
