@@ -87,7 +87,8 @@ class GhostCli(HttpCli):
 
     def get_posts(self, attr: str, value: Any, page: int=1, limit: int=15) -> Union[List[Post], None]:
         logger.debug(f"{attr}: {value}")
-        my_filter = f"?filter={attr}:{value}&page={page}&limit={limit}"
+        q_filter = "?" if attr is None or value is None else f"?filter={attr}:{value}&"
+        my_filter = f"{q_filter}page={page}&limit={limit}"
         res = self.get('posts', my_filter)
         data = res.json()['posts']
         data = None if data is None else [Post(**d) for d in data]
