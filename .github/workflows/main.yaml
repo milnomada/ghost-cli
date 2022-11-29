@@ -6,10 +6,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actionsdesk/semver
+    - name: "Semver action"
+      id: semver-tag
+      uses: gandarez/semver-action@vlatest
       with:
-        bump: patch
-        prerelease: withBuildNumber
-        prelabel: beta
-        initial_version: '0.1.1'
+        prefix: ""
+        prerelease_id: "alpha"
+        main_branch_name: "main"
+        develop_branch_name: ${{ github.ref_name }}
+        debug: "true"
+    - name: "Created tag"
+      run: echo "tag ${{ steps.semver-tag.outputs.semver_tag }}"
