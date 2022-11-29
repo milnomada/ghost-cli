@@ -8,7 +8,7 @@ jobs:
     steps:
     - name: "Semver action"
       id: semver-tag
-      uses: gandarez/semver-action@vlatest
+      uses: gandarez/semver-action@v1.0.1
       with:
         prefix: ""
         prerelease_id: "alpha"
