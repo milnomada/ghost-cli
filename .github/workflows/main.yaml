@@ -46,8 +46,14 @@
     
         - uses: datamonsters/replace-action@v2
           with:
-            files: 'setup.py'
+            files: setup.py
             replacements: '${{ env.PREVIOUS_VERSION }}=${{ env.VERSION }}'
+
+        - name: Remove Extra File
+          run: |
+            if [[ -f ${{ env.VERSION }} ]]; then
+              rm -f ${{ env.VERSION }}
+            fi
     
         - name: Commit setup bump
           uses: devops-infra/action-commit-push@master
