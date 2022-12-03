@@ -3,12 +3,14 @@ import sys
 import os
 import json
 import unittest
+import pytest
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from slugify import slugify
 from ghost_cli import GhostCli
 from ghost_cli.client import HttpCli
+from ghost_cli.models import Post
 from unittest.mock import Mock, MagicMock, patch, PropertyMock
 
 
@@ -19,6 +21,21 @@ my_mock.post = MagicMock(return_value=response)
 
 
 class TestClient():
+
+    def test_post_model(self, mocker):
+        post_title = "Hello World"
+        post_slug = slugify(post_title)
+        
+        my_post = {
+            "title": post_title,
+            "slug": post_slug,
+            "non_existent": 3
+        }
+        p = Post(**my_post)
+        assert p.title == post_title
+        assert p.slug == post_slug
+        with pytest.raises(AttributeError):
+            print(p.non_existent, flush=False)
 
     def test_get_post(self, mocker):
         post_title = "Hello World"
