@@ -164,3 +164,14 @@ class GhostCli(HttpCli):
         res = self.delete(f'tags/{id}')
         logger.debug(res.__dict__)
         return res.status_code == 204 if res is not None else False
+
+    def create_author(self, **kwargs) -> bool:
+        body = {'authors': [kwargs]}
+        res = self.post('authors', body)
+        logger.debug(res.__dict__)
+        return res.status_code == 201 if res is not None else False
+
+    def delete_author(self, id: str) -> bool:
+        res = self.delete(f'authors/{id}')
+        logger.debug(res.__dict__)
+        return res.status_code == 204 if res is not None else False
