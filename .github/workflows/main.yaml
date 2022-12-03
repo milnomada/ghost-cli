@@ -40,7 +40,7 @@
     #          exit 1
     #        fi
     
-        - uses: datamonsters/replace-action
+        - uses: datamonsters/replace-action@latest
           with:
             files: 'setup.py'
             replacements: '${{ steps.semver_tag.outputs.previous-version }}=${{ steps.semver_tag.outputs.semantic-version }}'
