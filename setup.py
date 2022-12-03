@@ -12,13 +12,17 @@ setup(
     install_requires=[
         'pyjwt>=2.4.0',
         'requests>=2.22.0',
-        'python-slugify>=6.0.0'
+        'python-slugify>=6.0.0',
+        'pytest<=7.2.0',
+        'pytest-cov<=4.0.0',
+        'pytest-mock<=3.10.0',
+        'coverage-badge<=1.1.0'
     ],
     classifiers=[
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: BSD License',  
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
 )
