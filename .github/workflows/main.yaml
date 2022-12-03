@@ -11,6 +11,7 @@ jobs:
     if: github.event.pull_request.merged
     steps:
     - name: Tag
+      id: semver_tag
       uses: SOLIDSoftworks/semver-tags@v1
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -18,4 +19,20 @@ jobs:
         default-version: '0.1.0'
         create-release: false
         prerelease: ''
+    - name: Update setup file
+      run: |
+        VERSION=${{ steps.semver_tag.outputs.semantic-version }}
+        VERSION=$(echo $VERSION | sed s/v//g)
+        echo New version: $VERSION
+        sed -iE s/[0-9]+(\.[0-9]+)*/$VERSION/g setup.py
+    - name: Commit setup bump
+      uses: devops-infra/action-commit-push@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        add_timestamp: true
+        commit_prefix: ""
+        commit_message: "Bump setup.py version"
+        force: false
+        target_branch: main
+
     
