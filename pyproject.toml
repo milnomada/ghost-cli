@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "ghost_cli"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.6.8"
 pyjwt = "2.4.0"
 requests = "2.22.0"
 python-slugify = "6.0.0"
