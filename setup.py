@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='ghost-cli',
-    version='0.1.65',
+    version='0.1.66',
     description='A Python Client for the Ghost Admin API',
     url='https://github.com/milnomada/ghost-cli',
     author='Milnomada.org',
