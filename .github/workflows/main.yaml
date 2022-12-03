@@ -1,40 +1,57 @@
 ---
-name: "test-workflow"
-on:
-  pull_request:
-    types:
-      - closed
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment: deployment
-    if: github.event.pull_request.merged
-    steps:
-    - name: Tag
-      id: semver_tag
-      uses: SOLIDSoftworks/semver-tags@v1
-      with:
-        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-        tag-prefix: 'v'
-        default-version: '0.1.0'
-        create-release: false
-        prerelease: ''
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-      with:
-        token: ${{ secrets.REPO_TOKEN }}
-    - name: Update setup file
-      run: |
-        VERSION=${{ steps.semver_tag.outputs.semantic-version }}
-        VERSION=$(echo $VERSION | sed s/v//g)
-        echo New version: $VERSION
-        
-        sed -E s/version=\.[0-9]+\.[0-9]+\.[0-9]+\./version="'"$VERSION"'"/g setup.py
-        sed -E s/version=\.[0-9]+\.[0-9]+\.[0-9]+\./version="'"$VERSION"'"/g setup.py > setup.py
-    - name: Commit setup bump
-      uses: devops-infra/action-commit-push@master
-      with:
-        github_token: ${{ secrets.REPO_TOKEN }}
-        commit_message: "Bump setup.py to ${{ steps.semver_tag.outputs.semantic-version }}"
-        force: true
+    name: "test-workflow"
+    on:
+      push:
+        branches:
+          - feature/debug-effort
+      # pull_request:
+      #  types:
+      #    - closed
+    jobs:
+      deploy:
+        runs-on: ubuntu-latest
+        environment: deployment
+        # if: github.event.pull_request.merged
+        steps:
+        - name: Tag
+          id: semver_tag
+          uses: SOLIDSoftworks/semver-tags@v1
+          with:
+            GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+            tag-prefix: 'v'
+            default-version: '0.1.0'
+            create-release: false
+            prerelease: ''
+        - name: Checkout Repository
+          uses: actions/checkout@v2
+          with:
+            token: ${{ secrets.REPO_TOKEN }}
+    #    - name: Update setup file
+    #      run: |
+    #        VERSION=${{ steps.semver_tag.outputs.semantic-version }}
+    #        VERSION=$(echo $VERSION | sed s/v//g)
+    #        echo New version: $VERSION
+    #        
+    #        sed -E s/version=\.[0-9]+\.[0-9]+\.[0-9]+\./version="'"$VERSION"'"/g setup.py
+    #        sed -E s/version=\.[0-9]+\.[0-9]+\.[0-9]+\./version="'"$VERSION"'"/g setup.py | tee myfile.py
+    #        cat myfile.py
+    #        if [[ $(wc -l myfile.py | awk '{ print $1 }') -gt 0 ]]; then
+    #          rm -f setup.py
+    #          mv myfile.py setup.py
+    #        else
+    #          echo "Replacement had zero lines"
+    #          exit 1
+    #        fi
     
+        - uses: datamonsters/replace-action
+          with:
+            files: 'setup.py'
+            replacements: '${{ steps.semver_tag.outputs.previous-version }}=${{ steps.semver_tag.outputs.semantic-version }}'
+    
+        - name: Commit setup bump
+          uses: devops-infra/action-commit-push@master
+          with:
+            github_token: ${{ secrets.REPO_TOKEN }}
+            commit_message: "Bump setup.py to ${{ steps.semver_tag.outputs.semantic-version }}"
+            force: true
+        
