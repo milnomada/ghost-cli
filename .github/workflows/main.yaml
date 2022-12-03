@@ -19,6 +19,7 @@
             default-version: '0.1.0'
             create-release: false
             prerelease: ''
+            add-minor-tag: true
         - name: Checkout Repository
           uses: actions/checkout@v2
           with:
@@ -32,17 +33,6 @@
             PREVIOUS_VERSION=$(echo $PREVIOUS_VERSION | sed s/v//g)
             echo "PREVIOUS_VERSION=$PREVIOUS_VERSION" >> $GITHUB_ENV
             echo $PREVIOUS_VERSION --> $VERSION
-    #        
-    #        sed -E s/version=\.[0-9]+\.[0-9]+\.[0-9]+\./version="'"$VERSION"'"/g setup.py
-    #        sed -E s/version=\.[0-9]+\.[0-9]+\.[0-9]+\./version="'"$VERSION"'"/g setup.py | tee myfile.py
-    #        cat myfile.py
-    #        if [[ $(wc -l myfile.py | awk '{ print $1 }') -gt 0 ]]; then
-    #          rm -f setup.py
-    #          mv myfile.py setup.py
-    #        else
-    #          echo "Replacement had zero lines"
-    #          exit 1
-    #        fi
     
         - uses: datamonsters/replace-action@v2
           with:
@@ -53,6 +43,7 @@
           run: |
             if [[ -f ${{ env.VERSION }} ]]; then
               rm -f ${{ env.VERSION }}
+              echo "Deleted version file created by datamonsters/replace-action"
             fi
     
         - name: Commit setup bump

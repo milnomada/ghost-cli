@@ -18,17 +18,17 @@ pip install git+https://github.com/milnomada/ghost-cli.git#egg=ghost-cli
 ## Usage
 
 ```python
-    from ghost_cli import GhostCli, Tokener
+from ghost_cli import GhostCli, Tokener
 
-    tokener = Tokener()
-    token = tokener.generate()
-    cli = GhostCli("http://my.ghost.io", token)
-    cli.create_post(title="hello world")
+tokener = Tokener()
+token = tokener.generate()
+cli = GhostCli("http://my.ghost.io", token)
+cli.create_post(title="hello world")
 
-    post = cli.get_post_by_title("hello world")
-    print(f"{post.title}, {post.slug}, {post.published_at}, {post.created_at}")
-    post = cli.get_post("slug", "hello-world")
-    
-    updated = cli.update_post(post.id, title="Hello World Auth", updated_at=post.updated_at)
-    print(f"updated: {updated}")
+post = cli.get_post_by_title("hello world")
+print(f"{post.title}, {post.slug}, {post.published_at}, {post.created_at}")
+post = cli.get_post("slug", "hello-world")
+
+updated = cli.update_post(post.id, title="Hello World Auth", updated_at=post.updated_at)
+print(f"updated: {updated}")
 ```

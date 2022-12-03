@@ -70,3 +70,19 @@ class Tag(object):
     def __init__(self, **kwargs):
         for k in kwargs:
             setattr(self, k, kwargs[k])
+
+
+class Author(object):
+    slug: str # "cameron",
+    id: str # "5ddc9b9510d8970038255d02",
+    name: str # "Cameron Almeida",
+    profile_image: str # "https://docs.ghost.io/content/images/2019/03/1c2f492a-a5d0-4d2d-b350-cdcdebc7e413.jpg",
+    cover_image: str # null,
+    bio: str # "Editor at large.",
+    website: str # "https://example.com",
+    location: str # "Cape Town",
+    facebook: str # "example",
+    twitter: str # "@example",
+    meta_title: str # null,
+    meta_description: str # null,
+    url: str # "https://docs.ghost.io/author/cameron/"
