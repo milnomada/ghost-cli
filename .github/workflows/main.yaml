@@ -19,7 +19,7 @@ jobs:
         default-version: '0.1.0'
         create-release: false
         prerelease: ''
-        incremented-value: minor
+        incremented-value: patch
     - name: Checkout Repository
       uses: actions/checkout@v2
       with:
@@ -36,8 +36,15 @@ jobs:
     - name: Update Files
       uses: datamonsters/replace-action@v2
       with:
-        files: 'setup.py,pyproject.toml'
+        files: setup.py
         replacements: '${{ env.PREVIOUS_VERSION }}=${{ env.VERSION }}'
+
+    - name: Update Project File
+      uses: datamonsters/replace-action@v2
+      with:
+        files: pyproject.toml
+        replacements: 'version = ${{ env.PREVIOUS_VERSION }}'='version = ${{ env.VERSION }}'
+
     - name: Remove Extra File
       run: |
         if [[ -f ${{ env.VERSION }} ]]; then
