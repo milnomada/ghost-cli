@@ -21,6 +21,8 @@ jobs:
         prerelease: ''
     - name: Checkout Repository
       uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.REPO_TOKEN }}
     - name: Update setup file
       run: |
         VERSION=${{ steps.semver_tag.outputs.semantic-version }}
