@@ -5,7 +5,7 @@ on:
     types: [closed]
 jobs:
   deploy:
-    runs-on: ubuntu-lates
+    runs-on: ubuntu-latest
     environment: deployment
     if: github.event.pull_request.merged
     steps:
