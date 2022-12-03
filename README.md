@@ -1,10 +1,14 @@
 # Ghost Cli
 A Python client for [Ghost]()
 
+![Cov](./assets/cov.svg)
+![GitHub tag](https://img.shields.io/github/v/tag/milnomada/ghost-cli)
+
+
 ## Configuration
 
 Create a Custom Integration as explained [here](https://ghost.org/docs/admin-api/#token-authentication).  
-The Integration will provide the Admin API Key. Create the `GHOST_KEY` environment variable with the value of the admin key:
+The Integration will provide the Admin API Key, use it as value to create the `GHOST_KEY` environment variable:
 ```
 export GHOST_KEY="633391e30a8cba0bc1e96f20:a12bc792cd9ed482d4a7d1da2c045e5261feae2117fab4d8dad0d93f7e34bc82"
 ```
