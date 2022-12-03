@@ -26,7 +26,7 @@ jobs:
         VERSION=${{ steps.semver_tag.outputs.semantic-version }}
         VERSION=$(echo $VERSION | sed s/v//g)
         echo New version: $VERSION
-        echo $(sed -E s/[0-9]+(\.[0-9]+)*/0.1.4/g setup.py) | tee setup.py
+        sed -E s/[0-9]+\.[0-9]+\.[0-9]+/$VERSION/g setup.py | tee setup.py
     - name: Commit setup bump
       uses: devops-infra/action-commit-push@master
       with:
