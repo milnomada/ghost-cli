@@ -17,5 +17,5 @@ jobs:
         tag-prefix: 'v'
         default-version: '0.1.0'
         create-release: false
-        prerelease: 'alpha'
+        prerelease: ''
     
