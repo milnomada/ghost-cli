@@ -1,14 +1,15 @@
 ---
 name: "test-workflow"
 on:
-  pull_request:
-    types:
-      - closed
+  push:
+  # pull_request:
+  #  types:
+  #    - closed
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: deployment
-    if: github.event.pull_request.merged
+    # if: github.event.pull_request.merged
     steps:
     - name: Tag
       id: semver_tag
@@ -30,7 +31,16 @@ jobs:
         echo New version: $VERSION
         
         sed -E s/version=\.[0-9]+\.[0-9]+\.[0-9]+\./version="'"$VERSION"'"/g setup.py
-        sed -E s/version=\.[0-9]+\.[0-9]+\.[0-9]+\./version="'"$VERSION"'"/g setup.py > setup.py
+        sed -E s/version=\.[0-9]+\.[0-9]+\.[0-9]+\./version="'"$VERSION"'"/g setup.py | tee myfile.py
+        cat myfile.py
+        if [[ $(wc -l myfile) -gt 0 ]]; then
+          rm -f setup.py
+          mv myfile.py setup.py
+        else
+          echo "Replacement had zero lines"
+          exit 1
+        fi
+
     - name: Commit setup bump
       uses: devops-infra/action-commit-push@master
       with:
