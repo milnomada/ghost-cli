@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ghost-cli"
- "0.3.0" = "0.3.0"
+version = "0.3.1"
 description = ""
 authors = ["Milnomada <info@milnomada.io>"]
 readme = "README.md"
