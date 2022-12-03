@@ -1,5 +1,7 @@
 import datetime
+import logging
 
+logger = logging.getLogger(__file__)
 
 class Post(object):
     slug: str # "welcome-short",
@@ -43,6 +45,9 @@ class Post(object):
 
     def __init__(self, **kwargs):
         for k in kwargs:
+            if k not in self.__annotations__:
+                logger.debug(f"Post: drop attribute {k}")
+                continue
             setattr(self, k, kwargs[k])
 
 
@@ -69,6 +74,9 @@ class Tag(object):
 
     def __init__(self, **kwargs):
         for k in kwargs:
+            if k not in self.__annotations__:
+                logger.debug(f"Tag: drop attribute {k}")
+                continue
             setattr(self, k, kwargs[k])
 
 
@@ -86,3 +94,10 @@ class Author(object):
     meta_title: str # null,
     meta_description: str # null,
     url: str # "https://docs.ghost.io/author/cameron/"
+
+    def __init__(self, **kwargs):
+        for k in kwargs:
+            if k not in self.__annotations__:
+                logger.debug(f"Author: drop attribute {k}")
+                continue
+            setattr(self, k, kwargs[k])
