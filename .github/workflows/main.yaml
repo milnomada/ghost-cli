@@ -5,15 +5,15 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged
+    
     steps:
-    - name: "Semver action"
-      id: semver-tag
-      uses: gandarez/semver-action@v1.0.1
+    - name: Tag
+      uses: K-Phoen/semver-release-action@master
+      release_branch: main
+      release_strategy: tag
       with:
-        prefix: ""
-        prerelease_id: "alpha"
-        main_branch_name: "main"
-        develop_branch_name: ${{ github.ref_name }}
-        debug: "true"
-    - name: "Created tag"
-      run: echo "tag ${{ steps.semver-tag.outputs.semver_tag }}"
+        release_branch: master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
