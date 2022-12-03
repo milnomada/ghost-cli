@@ -13,9 +13,9 @@ setup(
         'pyjwt>=2.4.0',
         'requests>=2.22.0',
         'python-slugify>=6.0.0',
-        'pytest<=7.2.0',
+        'pytest<=7.0.1',
         'pytest-cov<=4.0.0',
-        'pytest-mock<=3.10.0',
+        'pytest-mock<=3.6.1',
         'coverage-badge<=1.1.0'
     ],
     classifiers=[
