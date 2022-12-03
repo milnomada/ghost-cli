@@ -11,10 +11,11 @@ jobs:
     if: github.event.pull_request.merged
     steps:
     - name: Tag
-      uses: K-Phoen/semver-release-action@master
+      uses: SOLIDSoftworks/semver-tags@v1
       with:
-        release_branch: main
-        release_strategy: tag
-      env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        tag-prefix: 'v'
+        default-version: '0.1.0'
+        create-release: false
+        prerelease: 'alpha'
     
