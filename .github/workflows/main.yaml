@@ -33,7 +33,7 @@ jobs:
         sed -E s/version=\.[0-9]+\.[0-9]+\.[0-9]+\./version="'"$VERSION"'"/g setup.py
         sed -E s/version=\.[0-9]+\.[0-9]+\.[0-9]+\./version="'"$VERSION"'"/g setup.py | tee myfile.py
         cat myfile.py
-        if [[ $(wc -l myfile) -gt 0 ]]; then
+        if [[ $(wc -l myfile.py) -gt 0 ]]; then
           rm -f setup.py
           mv myfile.py setup.py
         else
