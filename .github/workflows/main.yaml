@@ -26,6 +26,7 @@ jobs:
         VERSION=${{ steps.semver_tag.outputs.semantic-version }}
         VERSION=$(echo $VERSION | sed s/v//g)
         echo New version: $VERSION
+        
         sed -E s/version=\.[0-9]+\.[0-9]+\.[0-9]+\./version="'"$VERSION"'"/g setup.py
         sed -E s/version=\.[0-9]+\.[0-9]+\.[0-9]+\./version="'"$VERSION"'"/g setup.py > setup.py
     - name: Commit setup bump
