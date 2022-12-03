@@ -96,7 +96,7 @@ class TestClientTags():
         res = cli.create_tag(**my_tag)
         assert res == False
 
-    def test_delete_post(self, mocker):
+    def test_delete_tag(self, mocker):
         tag_id = 1
         response.status_code = 204
         mocker.patch('ghost_cli.client.HttpCli.delete', return_value=response)
