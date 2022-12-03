@@ -32,6 +32,10 @@ jobs:
         PREVIOUS_VERSION=${{ steps.semver_tag.outputs.previous-version }}
         PREVIOUS_VERSION=$(echo $PREVIOUS_VERSION | sed s/v//g)
         echo "PREVIOUS_VERSION=$PREVIOUS_VERSION" >> $GITHUB_ENV
+        PROJECT_REP="version = \"$PREVIOUS_VERSION\""
+        echo "PROJECT_REP=$PROJECT_REP" >> $GITHUB_ENV
+        PROJECT_REP_DEST="version = \"$VERSION\""
+        echo "PROJECT_REP_DEST=$PROJECT_REP_DEST" >> $GITHUB_ENV
         echo $PREVIOUS_VERSION --> $VERSION
     - name: Update Files
       uses: datamonsters/replace-action@v2
@@ -43,7 +47,7 @@ jobs:
       uses: datamonsters/replace-action@v2
       with:
         files: pyproject.toml
-        replacements: 'version = ${{ env.PREVIOUS_VERSION }}'='version = ${{ env.VERSION }}'
+        replacements: ${{ env.PROJECT_REP }}=${{ env.PROJECT_REP_DEST }}
 
     - name: Remove Extra File
       run: |
