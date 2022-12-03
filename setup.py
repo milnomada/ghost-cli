@@ -2,12 +2,12 @@ from setuptools import setup
 
 setup(
     name='ghost-cli',
-    version='0.1.0',    
-    description='A Python Ghost Client ',
+    version='0.1.1',
+    description='A Python Client for the Ghost Admin API',
     url='https://github.com/milnomada/ghost-cli',
     author='Milnomada.org',
     author_email='info@milnomada.io',
-    license='BSD 2-clause',
+    license='GNU Public',
     packages=['ghost_cli'],
     install_requires=[
         'pyjwt>=2.4.0',
