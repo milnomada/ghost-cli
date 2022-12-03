@@ -71,7 +71,11 @@ class GhostCli(HttpCli):
         logger.info(f"GhostCli started at {url}")
 
     def _get_payload(self, res: Response) -> Union[Any, None]:
-        payload = res.json()
+        try:
+            payload = res.json()
+        except Exception as e:
+            logger.error(f"Exception: {e}")
+            return None
         if 'errors' in payload:
             logger.error(payload['errors'])
             return None
@@ -143,10 +147,10 @@ class GhostCli(HttpCli):
         res = self.post('posts', body)
         return res.status_code == 201 if res is not None else False
 
-    def update_post(self, id: str, **kwargs):
+    def update_post(self, id: str, **kwargs) -> bool:
         body = {'posts': [kwargs]}
         res = self.put(f'posts/{id}', body)
-        logger.debug(res.__dict__)
+        logger.debug(res.__dict__ if res is not None else res)
         return res.status_code == 200 if res is not None else False
 
     def delete_post(self, id: str) -> bool:
