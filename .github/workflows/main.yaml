@@ -3,17 +3,16 @@ name: "test-workflow"
 on:
   pull_request:
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-lates
+    environment: deployment
     if: github.event.pull_request.merged
-    
     steps:
     - name: Tag
       uses: K-Phoen/semver-release-action@master
-      release_branch: main
-      release_strategy: tag
       with:
-        release_branch: master
+        release_branch: main
+        release_strategy: tag
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
