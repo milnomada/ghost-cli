@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ghost-cli"
-version = "0.2.0"
+version = "0.3.0"
 description = ""
 authors = ["Milnomada <info@milnomada.io>"]
 readme = "README.md"
@@ -20,3 +20,10 @@ coverage-badge = "^1.1.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+nded Audience :: Science/Research',
+        'License :: OSI Approved :: BSD License',  
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+    ],
+)
