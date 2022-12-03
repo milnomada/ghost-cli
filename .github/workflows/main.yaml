@@ -19,7 +19,7 @@
             default-version: '0.1.0'
             create-release: false
             prerelease: ''
-            add-minor-tag: true
+            incremented-value: minor
         - name: Checkout Repository
           uses: actions/checkout@v2
           with:
