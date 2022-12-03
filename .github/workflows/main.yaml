@@ -1,12 +1,9 @@
 ---
     name: "test-workflow"
     on:
-      push:
-        branches:
-          - feature/debug-effort
-      # pull_request:
-      #  types:
-      #    - closed
+      pull_request:
+        types:
+          - closed
     jobs:
       deploy:
         runs-on: ubuntu-latest
