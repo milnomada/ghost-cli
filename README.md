@@ -30,8 +30,8 @@ The Integration will provide the Admin API Key, use it as value to create the `G
 export GHOST_KEY="633391e30a8cba0bc1e96f20:a12bc792cd9ed482d4a7d1da2c045e5261feae2117fab4d8dad0d93f7e34bc82"
 ```
 
-The `Tokener` loads the `GHOST_KEY` by default, unless a key is provided. 
-In your code, instantiate the `Tokener` class providing the `key` attribute.
+The `Tokener` class loads the `GHOST_KEY` by default, unless a key is provided. 
+To provide the key otherwise, it is possible instantiate the `Tokener` class providing the `key` parameter.
 
 ## Install
 
@@ -65,10 +65,10 @@ cli.create_post(title="hello world")
 # or
 tag = cli.get_tag("name", "Philosophy")
 my_post = {
-    title: "hello world"
-    created_at: "2022-11-26T02:31:12.000Z",
-    published_at: "2022-11-26T02:43:15.000Z",
-    tags: [tag.__dict__]
+    "title": "hello world"
+    "created_at": "2022-11-26T02:31:12.000Z",
+    "published_at": "2022-11-26T02:43:15.000Z",
+    "tags": [tag.__dict__]
 }
 cli.create_post(**my_post)
 ```
@@ -84,6 +84,15 @@ post = cli.get_post("slug", "hello-world")
 ```python
 post = cli.get_post("slug", "hello-world")
 updated = cli.update_post(post.id, title="Hello World Auth", updated_at=post.updated_at)
+
+# or
+my_update = {
+    "title": "Hello World Auth",
+    "slug": "hello-world-auth",
+    "updated_at": post.updated_at,
+}
+updated = cli.update_post(post.id, **my_update)
+
 print(f"updated: {updated}")
 ```
 
@@ -93,3 +102,9 @@ post = cli.get_post("slug", "hello-world")
 deleted = cli.delete_post(post.id)
 print(f"deleted: {deleted}")
 ```
+
+## Ghost Versions
+
+Ghost-cli is compatible with the latest Ghost versions:
+- [Version 4.x](https://github.com/TryGhost/Ghost/releases)
+- [Version 5.x](https://github.com/TryGhost/Ghost/releases)
