@@ -10,8 +10,18 @@ logger = logging.getLogger(__file__)
 
 class Tokener(object):
     
-    def __init__(self):
-        key = os.environ.get("GHOST_KEY", None)
+    def __init__(self, key: str=None):
+        """Tokener init
+        Create a new Tokener instance. The `key` paramenter supersedes
+        the `GHOST_KEY` environment variable. This, allows to create
+        connectinos to different (ghost) hosts.
+        Args:
+            key (str, optional): A ghost key. Defaults to None.
+
+        Raises:
+            RuntimeError: It not key provided
+        """
+        key = os.environ.get("GHOST_KEY", None) if key is None else key
         if not key:
             raise RuntimeError("Missing environment configuration")
 
