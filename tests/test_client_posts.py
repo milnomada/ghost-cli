@@ -48,7 +48,6 @@ class TestClient():
         mocker.patch('requests.get', return_value=response)
 
         cli = GhostCli("http://localhost", "")
-        print(cli.get, type(cli.get))
         post = cli.get_post('slug', post_slug)
         assert post.title == post_title
         assert post.slug == post_slug
@@ -62,9 +61,7 @@ class TestClient():
         }]}
         response.json = MagicMock(return_value=my_posts)
         mocker.patch('requests.get', side_effect=Exception("my exception"))
-
         cli = GhostCli("http://localhost", "")
-        print(cli.get, type(cli.get))
         post = cli.get_post('slug', post_slug)
         assert post is None
 
@@ -77,9 +74,7 @@ class TestClient():
         }]}
         response.json = MagicMock(side_effect=Exception("my exception"))
         mocker.patch('requests.get', return_value=response)
-
         cli = GhostCli("http://localhost", "")
-        print(cli.get, type(cli.get))
         post = cli.get_post('slug', post_slug)
         assert post is None
 
@@ -91,9 +86,7 @@ class TestClient():
         }]}
         response.json = MagicMock(return_value=my_error)
         mocker.patch('requests.get', return_value=response)
-
         cli = GhostCli("http://localhost", "")
-        print(cli.get, type(cli.get))
         post = cli.get_post('slug', post_slug)
         assert post is None
 
@@ -105,11 +98,8 @@ class TestClient():
             "slug": post_slug
         }]}
         response.json = MagicMock(return_value=my_posts)
-        # mocker.patch('ghost_cli.client.HttpCli.get', return_value=response)
         mocker.patch('requests.get', return_value=response)
-
         cli = GhostCli("http://localhost", "")
-        print(cli.get, type(cli.get))
         post = cli.get_post_by_title(post_title)
         assert post.title == post_title
         assert post.slug == post_slug
@@ -129,7 +119,6 @@ class TestClient():
         }]}
 
         response.json = MagicMock(return_value=my_posts)
-        # mocker.patch('ghost_cli.client.HttpCli.get', return_value=response)
         mocker.patch('requests.get', return_value=response)
 
         cli = GhostCli("http://localhost", "")
@@ -173,7 +162,6 @@ class TestClient():
             "slug": post_slug
         }
         response.status_code = 400
-        # mocker.patch('ghost_cli.client.HttpCli.post', return_value=response)
         mocker.patch('requests.post', side_effect=Exception("my exception"))
         cli = GhostCli("http://localhost", "")
         res = cli.create_post(**my_post)
@@ -213,7 +201,6 @@ class TestClient():
             "title": post_title,
         }
         mocker.patch('requests.put', side_effect=Exception("my exception"))
-
         cli = GhostCli("http://localhost", "")
         res = cli.update_post(post_id, **my_post)
         assert res == False

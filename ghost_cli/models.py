@@ -3,6 +3,7 @@ import logging
 
 logger = logging.getLogger(__file__)
 
+
 class Post(object):
     slug: str # "welcome-short",
     id: str # "5ddc9141c35e7700383b2937",
