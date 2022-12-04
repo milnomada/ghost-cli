@@ -92,6 +92,7 @@ class GhostCli(HttpCli):
 
     def get_post(self, attr: str, value: Any) -> Union[Post, None]:
         logger.debug(f"{attr}: {value}")
+        value = value if attr != "title" else f"'{value}'"
         my_filter = f"filter={attr}:{value}&limit=1"
         res = self.get('posts', my_filter)
         data = self._get_payload(res) or []
@@ -124,7 +125,7 @@ class GhostCli(HttpCli):
 
     def get_tag(self, attr: str, value: Any) -> Union[Tag, None]:
         logger.debug(f"{attr}: {value}")
-        value = value if attr != "name" else f"'{value}'" 
+        value = value if attr != "name" else f"'{value}'"
         my_filter = f"filter={attr}:{value}&limit=1"
         res = self.get('tags', my_filter)
         data = self._get_payload(res) or []

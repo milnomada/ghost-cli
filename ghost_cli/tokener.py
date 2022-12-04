@@ -1,7 +1,6 @@
 import jwt
 import datetime
 import os
-import requests
 import logging
 
 
@@ -14,7 +13,7 @@ class Tokener(object):
         """Tokener init
         Create a new Tokener instance. The `key` paramenter supersedes
         the `GHOST_KEY` environment variable. This, allows to create
-        connectinos to different (ghost) hosts.
+        tokens for different (ghost) hosts.
         Args:
             key (str, optional): A ghost key. Defaults to None.
 
