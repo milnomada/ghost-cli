@@ -150,32 +150,38 @@ class GhostCli(HttpCli):
     def update_post(self, id: str, **kwargs) -> bool:
         body = {'posts': [kwargs]}
         res = self.put(f'posts/{id}', body)
-        logger.debug(res.__dict__ if res is not None else res)
+        if res is not None:
+            logger.debug(res.__dict__)
         return res.status_code == 200 if res is not None else False
 
     def delete_post(self, id: str) -> bool:
         res = self.delete(f'posts/{id}')
-        logger.debug(res.__dict__)
+        if res is not None:
+            logger.debug(res.__dict__)
         return res.status_code == 204 if res is not None else False
 
     def create_tag(self, **kwargs) -> bool:
         body = {'tags': [kwargs]}
         res = self.post('tags', body)
-        logger.debug(res.__dict__)
+        if res is not None:
+            logger.debug(res.__dict__)
         return res.status_code == 201 if res is not None else False
 
     def delete_tag(self, id: str) -> bool:
         res = self.delete(f'tags/{id}')
-        logger.debug(res.__dict__)
+        if res is not None:
+            logger.debug(res.__dict__)
         return res.status_code == 204 if res is not None else False
 
     def create_author(self, **kwargs) -> bool:
         body = {'authors': [kwargs]}
         res = self.post('authors', body)
-        logger.debug(res.__dict__)
+        if res is not None:
+            logger.debug(res.__dict__)
         return res.status_code == 201 if res is not None else False
 
     def delete_author(self, id: str) -> bool:
         res = self.delete(f'authors/{id}')
-        logger.debug(res.__dict__)
+        if res is not None:
+            logger.debug(res.__dict__)
         return res.status_code == 204 if res is not None else False

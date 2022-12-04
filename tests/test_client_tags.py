@@ -61,7 +61,6 @@ class TestClientTags():
         mocker.patch('ghost_cli.client.HttpCli.get', return_value=response)
 
         cli = GhostCli("http://localhost", "")
-        print(cli.get, type(cli.get))
         tags = cli.get_tags()
         tag = tags[0]
         assert len(tags) == 1
