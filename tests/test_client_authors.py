@@ -50,7 +50,7 @@ class TestClientAuthors():
         res = cli.create_author(**my_author)
         assert res == True
 
-    def test_create_tag_failed(self, mocker):
+    def test_create_author_failed(self, mocker):
         author_name = "John Foo"
         author_slug = slugify(author_name)
         my_author = {

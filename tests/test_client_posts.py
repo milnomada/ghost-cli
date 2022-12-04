@@ -22,7 +22,7 @@ my_mock.post = MagicMock(return_value=response)
 
 class TestClient():
 
-    def test_post_model(self, mocker):
+    def test_post_model(self):
         post_title = "Hello World"
         post_slug = slugify(post_title)
         
