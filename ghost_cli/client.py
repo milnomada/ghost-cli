@@ -82,25 +82,27 @@ class GhostCli(HttpCli):
         key = list(payload.keys())[0]
         return payload[key]
 
-    def get_post_by_title(self, title: str) -> Union[Post, None]:
+    def get_post_by_title(self, title: str) -> Tuple[Union[Post, None], Response]:
         quoted = urllib.parse.quote(title)
         logger.debug(f"{title} -> {quoted}")
         my_filter = f"filter=title:'{quoted}'&limit=1"
         res = self.get('posts', my_filter)
         data = self._get_payload(res) or []
-        return Post(**data[0]) if len(data) > 0 else None
+        data = Post(**data[0]) if len(data) > 0 else None
+        return data, res
 
-    def get_post(self, attr: str, value: Any) -> Union[Post, None]:
+    def get_post(self, attr: str, value: Any) -> Tuple[Union[Post, None], Response]:
         logger.debug(f"{attr}: {value}")
         value = value if attr != "title" else f"'{value}'"
         my_filter = f"filter={attr}:{value}&limit=1"
         res = self.get('posts', my_filter)
         data = self._get_payload(res) or []
-        return Post(**data[0]) if len(data) > 0 else None
+        data = Post(**data[0]) if len(data) > 0 else None
+        return data, res
 
     def get_posts(
         self, page: int=1, limit: int=15, formats: str="html,mobiledoc", order: str="publisihed_at desc"
-    ) -> Union[List[Post], None]:
+    ) -> Tuple[Union[List[Post], None], Response]:
         q = {
             'include': 'tags',
             'status': 'all',
@@ -113,25 +115,27 @@ class GhostCli(HttpCli):
         res = self.get('posts', my_filter)
         data = self._get_payload(res)
         data = None if data is None else [Post(**d) for d in data]
-        return data
+        return data, res
 
-    def get_tag_by_name(self, name: str) -> Union[Tag, None]:
+    def get_tag_by_name(self, name: str) -> Tuple[Union[Tag, None], Response]:
         quoted = urllib.parse.quote(name)
         logger.debug(f"{name} -> {quoted}")
         my_filter = f"filter=name:'{quoted}'&limit=1"
         res = self.get('tags', my_filter)
         data = self._get_payload(res) or []
-        return Tag(**data[0]) if len(data) > 0 else None
+        data = Tag(**data[0]) if len(data) > 0 else None
+        return data, res
 
-    def get_tag(self, attr: str, value: Any) -> Union[Tag, None]:
+    def get_tag(self, attr: str, value: Any) -> Tuple[Union[Tag, None], Response]:
         logger.debug(f"{attr}: {value}")
         value = value if attr != "name" else f"'{value}'"
         my_filter = f"filter={attr}:{value}&limit=1"
         res = self.get('tags', my_filter)
         data = self._get_payload(res) or []
-        return Tag(**data[0]) if len(data) > 0 else None
+        data = Tag(**data[0]) if len(data) > 0 else None
+        return data, res
 
-    def get_tags(self, page: int=1, limit: int=15) -> Union[List[Tag], None]:
+    def get_tags(self, page: int=1, limit: int=15) -> Tuple[Union[List[Tag], None], Response]:
         q = {
             'status': 'all',
             'page': page,
@@ -141,48 +145,55 @@ class GhostCli(HttpCli):
         res = self.get('tags', my_filter)
         data = self._get_payload(res)
         data = None if data is None else [Tag(**d) for d in data]
-        return data
+        return data, res
 
-    def create_post(self, **kwargs) -> bool:
+    def create_post(self, **kwargs) -> Tuple[bool, Response]:
         body = {'posts': [kwargs]}
         res = self.post('posts', body)
-        return res.status_code == 201 if res is not None else False
+        result = res.status_code == 201 if res is not None else False
+        return result, res
 
-    def update_post(self, id: str, **kwargs) -> bool:
+    def update_post(self, id: str, **kwargs) -> Tuple[bool, Response]:
         body = {'posts': [kwargs]}
         res = self.put(f'posts/{id}', body)
         if res is not None:
             logger.debug(res.__dict__)
-        return res.status_code == 200 if res is not None else False
+        result = res.status_code == 200 if res is not None else False
+        return result, res
 
-    def delete_post(self, id: str) -> bool:
+    def delete_post(self, id: str) -> Tuple[bool, Response]:
         res = self.delete(f'posts/{id}')
         if res is not None:
             logger.debug(res.__dict__)
-        return res.status_code == 204 if res is not None else False
+        result = res.status_code == 204 if res is not None else False
+        return result, res
 
-    def create_tag(self, **kwargs) -> bool:
+    def create_tag(self, **kwargs) -> Tuple[bool, Response]:
         body = {'tags': [kwargs]}
         res = self.post('tags', body)
         if res is not None:
             logger.debug(res.__dict__)
-        return res.status_code == 201 if res is not None else False
+        result = res.status_code == 201 if res is not None else False
+        return result, res
 
-    def delete_tag(self, id: str) -> bool:
+    def delete_tag(self, id: str) -> Tuple[bool, Response]:
         res = self.delete(f'tags/{id}')
         if res is not None:
             logger.debug(res.__dict__)
-        return res.status_code == 204 if res is not None else False
+        result = res.status_code == 204 if res is not None else False
+        return result, res
 
-    def create_author(self, **kwargs) -> bool:
+    def create_author(self, **kwargs) -> Tuple[bool, Response]:
         body = {'authors': [kwargs]}
         res = self.post('authors', body)
         if res is not None:
             logger.debug(res.__dict__)
-        return res.status_code == 201 if res is not None else False
+        result = res.status_code == 201 if res is not None else False
+        return result, res
 
-    def delete_author(self, id: str) -> bool:
+    def delete_author(self, id: str) -> Tuple[bool, Response]:
         res = self.delete(f'authors/{id}')
         if res is not None:
             logger.debug(res.__dict__)
-        return res.status_code == 204 if res is not None else False
+        result = res.status_code == 204 if res is not None else False
+        return result, res

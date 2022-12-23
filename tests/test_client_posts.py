@@ -48,7 +48,7 @@ class TestClient():
         mocker.patch('requests.get', return_value=response)
 
         cli = GhostCli("http://localhost", "")
-        post = cli.get_post('slug', post_slug)
+        post, _ = cli.get_post('slug', post_slug)
         assert post.title == post_title
         assert post.slug == post_slug
 
@@ -62,7 +62,7 @@ class TestClient():
         response.json = MagicMock(return_value=my_posts)
         mocker.patch('requests.get', side_effect=Exception("my exception"))
         cli = GhostCli("http://localhost", "")
-        post = cli.get_post('slug', post_slug)
+        post, _ = cli.get_post('slug', post_slug)
         assert post is None
 
     def test_get_post_fail_json(self, mocker):
@@ -75,7 +75,7 @@ class TestClient():
         response.json = MagicMock(side_effect=Exception("my exception"))
         mocker.patch('requests.get', return_value=response)
         cli = GhostCli("http://localhost", "")
-        post = cli.get_post('slug', post_slug)
+        post, _ = cli.get_post('slug', post_slug)
         assert post is None
 
     def test_get_post_fail_errors(self, mocker):
@@ -87,7 +87,7 @@ class TestClient():
         response.json = MagicMock(return_value=my_error)
         mocker.patch('requests.get', return_value=response)
         cli = GhostCli("http://localhost", "")
-        post = cli.get_post('slug', post_slug)
+        post, _ = cli.get_post('slug', post_slug)
         assert post is None
 
     def test_get_post_by_title(self, mocker):
@@ -100,7 +100,7 @@ class TestClient():
         response.json = MagicMock(return_value=my_posts)
         mocker.patch('requests.get', return_value=response)
         cli = GhostCli("http://localhost", "")
-        post = cli.get_post_by_title(post_title)
+        post, _ = cli.get_post_by_title(post_title)
         assert post.title == post_title
         assert post.slug == post_slug
 
@@ -122,7 +122,7 @@ class TestClient():
         mocker.patch('requests.get', return_value=response)
 
         cli = GhostCli("http://localhost", "")
-        posts = cli.get_posts()
+        posts, _ = cli.get_posts()
         post_1 = posts[0]
         assert len(posts) == 2
         assert post_1.title == post_title
@@ -138,8 +138,8 @@ class TestClient():
         response.status_code = 201
         mocker.patch('ghost_cli.client.HttpCli.post', return_value=response)
         cli = GhostCli("http://localhost", "")
-        res = cli.create_post(**my_post)
-        assert res == True
+        status, _  = cli.create_post(**my_post)
+        assert status == True
 
     def test_create_post_requests(self, mocker):
         post_title = "Hello World"
@@ -151,8 +151,8 @@ class TestClient():
         response.status_code = 201
         mocker.patch('requests.post', return_value=response)
         cli = GhostCli("http://localhost", "")
-        res = cli.create_post(**my_post)
-        assert res == True
+        status, _ = cli.create_post(**my_post)
+        assert status == True
 
     def test_create_post_failed(self, mocker):
         post_title = "Hello World"
@@ -164,8 +164,8 @@ class TestClient():
         response.status_code = 400
         mocker.patch('requests.post', side_effect=Exception("my exception"))
         cli = GhostCli("http://localhost", "")
-        res = cli.create_post(**my_post)
-        assert res == False
+        status, _ = cli.create_post(**my_post)
+        assert status == False
 
     def test_update_post(self, mocker):
         post_id = 1
@@ -177,8 +177,8 @@ class TestClient():
         response.status_code = 200
         mocker.patch('ghost_cli.client.HttpCli.put', return_value=response)
         cli = GhostCli("http://localhost", "")
-        res = cli.update_post(post_id, **my_post)
-        assert res == True
+        status, _ = cli.update_post(post_id, **my_post)
+        assert status == True
 
     def test_update_post_requests(self, mocker):
         post_id = 1
@@ -190,8 +190,8 @@ class TestClient():
         response.status_code = 200
         mocker.patch('requests.put', return_value=response)
         cli = GhostCli("http://localhost", "")
-        res = cli.update_post(post_id, **my_post)
-        assert res == True
+        status, _ = cli.update_post(post_id, **my_post)
+        assert status == True
 
     def test_update_post_failed(self, mocker):
         post_id = 1
@@ -202,22 +202,22 @@ class TestClient():
         }
         mocker.patch('requests.put', side_effect=Exception("my exception"))
         cli = GhostCli("http://localhost", "")
-        res = cli.update_post(post_id, **my_post)
-        assert res == False
+        status, _ = cli.update_post(post_id, **my_post)
+        assert status == False
 
     def test_delete_post(self, mocker):
         post_id = 1
         response.status_code = 204
         mocker.patch('ghost_cli.client.HttpCli.delete', return_value=response)
         cli = GhostCli("http://localhost", "")
-        res = cli.delete_post(post_id)
-        assert res == True
+        status, _ = cli.delete_post(post_id)
+        assert status == True
 
     def test_delete_post_request(self, mocker):
         post_id = 1
         response.status_code = 204
         mocker.patch('requests.delete', return_value=response)
         cli = GhostCli("http://localhost", "")
-        res = cli.delete_post(post_id)
-        assert res == True
+        status, _ = cli.delete_post(post_id)
+        assert status == True
         

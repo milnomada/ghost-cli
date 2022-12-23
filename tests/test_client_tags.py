@@ -31,7 +31,7 @@ class TestClientTags():
         mocker.patch('ghost_cli.client.HttpCli.get', return_value=response)
 
         cli = GhostCli("http://localhost", "")
-        tag = cli.get_tag('slug', tag_slug)
+        tag, _ = cli.get_tag('slug', tag_slug)
         assert tag.name == tag_name
         assert tag.slug == tag_slug
 
@@ -46,7 +46,7 @@ class TestClientTags():
         mocker.patch('ghost_cli.client.HttpCli.get', return_value=response)
 
         cli = GhostCli("http://localhost", "")
-        tag = cli.get_tag_by_name(tag_name)
+        tag, _ = cli.get_tag_by_name(tag_name)
         assert tag.name == tag_name
         assert tag.slug == tag_slug
 
@@ -61,7 +61,7 @@ class TestClientTags():
         mocker.patch('ghost_cli.client.HttpCli.get', return_value=response)
 
         cli = GhostCli("http://localhost", "")
-        tags = cli.get_tags()
+        tags, _ = cli.get_tags()
         tag = tags[0]
         assert len(tags) == 1
         assert tag.name == tag_name
@@ -77,8 +77,8 @@ class TestClientTags():
         response.status_code = 201
         mocker.patch('ghost_cli.client.HttpCli.post', return_value=response)
         cli = GhostCli("http://localhost", "")
-        res = cli.create_tag(**my_tag)
-        assert res == True
+        status, _ = cli.create_tag(**my_tag)
+        assert status == True
 
     def test_create_tag_failed(self, mocker):
         tag_name = "Last news"
@@ -92,15 +92,14 @@ class TestClientTags():
         mocker.patch('ghost_cli.client.HttpCli.post', return_value=response)
 
         cli = GhostCli("http://localhost", "")
-        res = cli.create_tag(**my_tag)
-        assert res == False
+        status, _ = cli.create_tag(**my_tag)
+        assert status == False
 
     def test_delete_tag(self, mocker):
         tag_id = 1
         response.status_code = 204
         mocker.patch('ghost_cli.client.HttpCli.delete', return_value=response)
         cli = GhostCli("http://localhost", "")
-        res = cli.delete_tag(tag_id)
-        assert res == True
-
-        
+        status, res = cli.delete_tag(tag_id)
+        assert status == True
+ 

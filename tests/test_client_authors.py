@@ -47,8 +47,8 @@ class TestClientAuthors():
         response.status_code = 201
         mocker.patch('ghost_cli.client.HttpCli.post', return_value=response)
         cli = GhostCli("http://localhost", "")
-        res = cli.create_author(**my_author)
-        assert res == True
+        status, _ = cli.create_author(**my_author)
+        assert status == True
 
     def test_create_author_failed(self, mocker):
         author_name = "John Foo"
@@ -62,5 +62,5 @@ class TestClientAuthors():
         mocker.patch('ghost_cli.client.HttpCli.post', return_value=response)
 
         cli = GhostCli("http://localhost", "")
-        res = cli.create_author(**my_author)
-        assert res == False
+        status, _ = cli.create_author(**my_author)
+        assert status == False
