@@ -21,19 +21,17 @@ class Post(object):
     created_at: datetime.datetime # "2019-11-26T02:43:13.000Z",
     updated_at: datetime.datetime # "2019-11-26T02:44:17.000Z",
     published_at: datetime.datetime # "2019-11-26T02:44:17.000Z",
-    created_by: str,
-    updated_by: str,
-    published_by str,
-    author: str,
-    type: str, # post 
-    locale: str,
+    created_by: str
+    updated_by: str
+    published_by: str
+    type: str # post 
+    locale: str
     custom_excerpt: str # null,
     codeinjection_head: str # null,
     codeinjection_foot: str # null,
     custom_template: str # null,
     canonical_url: str # null,
     tags: list #
-    authors: list #
     primary_author: dict #
     primary_tag: dict #
     url: str # "https://docs.ghost.io/welcome-short/",
