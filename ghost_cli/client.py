@@ -2,6 +2,7 @@ from slugify import slugify
 from typing import Union, Any, Tuple, List
 from requests import Response
 from .models import Post, Tag
+from .tokener import Tokener
 import datetime
 import logging
 import requests
@@ -9,6 +10,11 @@ import urllib
 
 
 logger = logging.getLogger(__file__)
+
+
+
+
+
 
 
 class HttpCli(object):
@@ -197,3 +203,12 @@ class GhostCli(HttpCli):
             logger.debug(res.__dict__)
         result = res.status_code == 204 if res is not None else False
         return result, res
+
+
+
+class GhostPy(object):
+    def __init__(self, url: str, t: Tokener):
+        url = url[:-1] if url.endswith("/") else url
+        self.endpoint = f"{url}/ghost/api/admin"
+        self.t = t
+        self.headers = {'Authorization': 'Ghost {}'.format(t.generate())}
