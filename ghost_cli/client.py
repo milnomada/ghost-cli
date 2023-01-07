@@ -210,5 +210,8 @@ class GhostPy(object):
     def __init__(self, url: str, t: Tokener):
         url = url[:-1] if url.endswith("/") else url
         self.endpoint = f"{url}/ghost/api/admin"
-        self.t = t
+        self.tokener = t
         self.headers = {'Authorization': 'Ghost {}'.format(t.generate())}
+
+    def auth(self):
+        self.headers = {'Authorization': 'Ghost {}'.format(self.tokener.generate())}
