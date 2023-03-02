@@ -48,7 +48,7 @@ import os
 from ghost_cli import GhostCli, Tokener
 
 tokener = Tokener()
-token = tokener.generate()
+token = tokener.generate(expire=30)
 
 # or
 my_key = os.environ.get("MY_ENV_KEY", None)
