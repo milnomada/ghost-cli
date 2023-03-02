@@ -29,8 +29,18 @@ class Tokener(object):
         self.secret = secret
         logger.debug("token generated id: {}".format(key_id))
 
-    def generate(self):
-        iat = int(datetime.datetime.now().timestamp())
+    def generate(self, expire: int=5) -> str:
+        """generate a jwt token
+
+        Args:
+            expire (int, optional): token will expire in `expire` minutes. Defaults to 5.
+
+        Returns:
+            str: jwt token
+        """
+        dt = datetime.datetime.now()
+        iat = int(dt.timestamp())
+        exp = iat + (expire * 60)
         header = {
             'alg': 'HS256',
             'typ': 'JWT',
@@ -38,7 +48,7 @@ class Tokener(object):
         }
         payload = {
             'iat': iat,
-            'exp': iat + 5 * 60,
+            'exp': exp,
             'aud': '/admin/'
         }
         logger.debug("decoding for id: {}".format(self.id))
